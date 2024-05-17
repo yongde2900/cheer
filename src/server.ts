@@ -12,10 +12,12 @@ interface ServerOptions {
 export class Server {
 	private readonly app = express();
 	private readonly port: number;
+	private readonly apiPrefix: string;
 
 	constructor(options: ServerOptions) {
 		const { port } = options;
 		this.port = port;
+		this.apiPrefix = options.apiPrefix;
 	}
 
 	async start() {
@@ -31,7 +33,7 @@ export class Server {
 			})
 		);
 
-		this.app.get('/', (_req: Request, res: Response) => {
+		this.app.get(`/`, (_req: Request, res: Response) => {
 			return res.status(HttpCode.OK).send({
 				message: 'Hello World'
 			});

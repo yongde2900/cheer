@@ -1,11 +1,12 @@
 import { envs } from './core/config/env';
 import { Server } from './server';
+import 'reflect-metadata';
 
 (() => {
 	main();
 })();
 
-function main(): void {
+export default function main(): void {
 	const server = new Server({
 		port: envs.PORT,
 		apiPrefix: envs.API_PREFIX
