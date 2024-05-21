@@ -1,23 +1,27 @@
-import express, { type Request, type Response } from 'express';
+import express, { Router, type Request, type Response } from 'express';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 
-import { HttpCode } from './core/contants';
+import { HttpCode } from './core/constants';
+import { ErrorMiddleware } from './features/shared/presentation/middlewares/error.middleware';
 
 interface ServerOptions {
 	port: number;
+	routes: Router;
 	apiPrefix: string;
 }
 
 export class Server {
 	private readonly app = express();
 	private readonly port: number;
+	private readonly routes: Router;
 	private readonly apiPrefix: string;
 
 	constructor(options: ServerOptions) {
-		const { port } = options;
+		const { port, routes, apiPrefix } = options;
 		this.port = port;
-		this.apiPrefix = options.apiPrefix;
+		this.routes = routes;
+		this.apiPrefix = apiPrefix;
 	}
 
 	async start() {
@@ -33,11 +37,20 @@ export class Server {
 			})
 		);
 
+		//cors
+
+		// Routes
+		this.app.use(this.apiPrefix, this.routes);
+
+		// Test rest api
 		this.app.get(`/`, (_req: Request, res: Response) => {
 			return res.status(HttpCode.OK).send({
 				message: 'Hello World'
 			});
 		});
+
+		// Error Middleware
+		this.routes.use(ErrorMiddleware.handelError);
 
 		this.app.listen(this.port, () => {
 			console.log(`Server  running on Port: ${this.port}`);

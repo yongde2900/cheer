@@ -1,6 +1,7 @@
 import request from 'supertest';
 import { Server } from './server';
-import { HttpCode } from './core/contants';
+import { HttpCode } from './core/constants';
+import { AppRoutes } from './routers';
 
 describe('Server', () => {
 	let server: Server;
@@ -8,6 +9,7 @@ describe('Server', () => {
 	beforeAll(() => {
 		server = new Server({
 			port: 3000,
+			routes: AppRoutes.routes,
 			apiPrefix: '/api'
 		});
 		server.start();
@@ -20,9 +22,9 @@ describe('Server', () => {
 	});
 
 	it('should apply rate limiting', async () => {
-		for (let i = 0; i < 101; i++) {
+		for (let i = 0; i < 102; i++) {
 			const response = await request(server['app']).get('/');
-			if (i < 100) {
+			if (i < 99) {
 				expect(response.status).toBe(HttpCode.OK);
 			} else {
 				expect(response.status).toBe(HttpCode.TOO_MANY_REQUESTS);

@@ -1,7 +1,7 @@
 import { IsInt, IsString, Max } from 'class-validator';
-import { BaseEntity } from '../../shared/domain/entities/BaseEntity';
+import { BaseEntity } from '../../../shared/domain/entities/BaseEntity';
 
-export default class HabitEntity extends BaseEntity {
+export class HabitEntity extends BaseEntity {
 	@IsInt({ message: '必須為數字' })
 	@Max(100, { message: '不得大於100' })
 	public id: number;
@@ -19,8 +19,7 @@ export default class HabitEntity extends BaseEntity {
 		this.description = description;
 	}
 
-	public static async fromJson(obj: Record<string, unknown>): Promise<HabitEntity> {
+	public static fromJson(obj: Record<string, unknown>): HabitEntity {
 		return super.baseFromJson<HabitEntity>(obj);
 	}
 }
-

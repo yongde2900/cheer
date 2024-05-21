@@ -1,6 +1,7 @@
 import { Server } from './server';
 import main from './app';
 import { envs } from './core/config/env';
+import { AppRoutes } from './routers';
 
 jest.mock('./server');
 
@@ -12,6 +13,7 @@ describe('Main Function', () => {
 
 		expect(MockedServer).toHaveBeenCalledWith({
 			port: envs.PORT,
+      routes: expect.any(Function),
 			apiPrefix: envs.API_PREFIX
 		});
 
