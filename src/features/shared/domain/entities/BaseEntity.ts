@@ -18,7 +18,6 @@ export class BaseEntity {
 				}
 				throw new Error('Error constraints is undefined');
 			});
-      console.log(validationErrors);
 			throw new ValidationError(validationErrors);
 		}
 		return instance;
