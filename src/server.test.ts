@@ -15,6 +15,10 @@ describe('Server', () => {
 		server.start();
 	});
 
+	afterAll(() => {
+		server.stop();
+	});
+
 	it("should respond with 'Hello World' on GET '/api/", async () => {
 		const response = await request(server['app']).get('/');
 		expect(response.status).toBe(200);

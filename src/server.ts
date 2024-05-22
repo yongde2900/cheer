@@ -1,6 +1,7 @@
 import express, { Router, type Request, type Response } from 'express';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
+import http from 'http';
 
 import { HttpCode } from './core/constants';
 import { ErrorMiddleware } from './features/shared/presentation/middlewares/error.middleware';
@@ -13,6 +14,7 @@ interface ServerOptions {
 
 export class Server {
 	private readonly app = express();
+	private server!: http.Server;
 	private readonly port: number;
 	private readonly routes: Router;
 	private readonly apiPrefix: string;
@@ -52,8 +54,11 @@ export class Server {
 		// Error Middleware
 		this.routes.use(ErrorMiddleware.handelError);
 
-		this.app.listen(this.port, () => {
+		this.server = this.app.listen(this.port, () => {
 			console.log(`Server  running on Port: ${this.port}`);
 		});
+	}
+
+	async stop() { if (this.server) this.server.close();
 	}
 }
