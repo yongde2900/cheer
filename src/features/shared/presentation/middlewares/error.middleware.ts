@@ -1,10 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
-import { HttpCode } from '../../../../core/constants';
-import { ValidationError } from '../../../../core/errors/validation.error';
-import { AppError } from '../../../../core/errors/custom.error';
+import { AppError, HttpCode,ValidationError } from '../../../../core';
 
 export class ErrorMiddleware {
-	public static handelError = (error: unknown, _req: Request, res: Response, next: NextFunction): void => {
+	public static handelError = (error: unknown, _req: Request, res: Response, _next: NextFunction): void => {
 		if (error instanceof ValidationError) {
 			const { message, name, validationErrors, stack } = error;
 			const statusCode = error.statusCode || HttpCode.INTERNAL_SERVER_ERROR;
