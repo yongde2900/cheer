@@ -11,11 +11,14 @@ describe('HabitEntity', () => {
 		expect(habit).toBeTruthy();
 	});
 
-	it('should throw an ValidationError', () => {
-		try {
-			HabitEntity.fromJson({ id: '1', name: 1, description: 1 });
-		} catch (e) {
-			expect(e).toBeInstanceOf(ValidationError);
-		}
+	it('should throw an ValidationError via constrouctor', () => {
+		expect(() => {
+			const habit = new HabitEntity(101, 'test', 'test');
+			HabitEntity.validate(habit);
+		}).toThrow(ValidationError);
+	});
+
+	it('should throw an ValidationError via fromJson function', () => {
+		expect(() => HabitEntity.fromJson({ id: 1 })).toThrow(ValidationError);
 	});
 });

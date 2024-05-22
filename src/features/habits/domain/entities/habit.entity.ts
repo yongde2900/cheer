@@ -1,4 +1,4 @@
-import { IsInt, IsString, Max } from 'class-validator';
+import { IsInt, IsString, Max, validateSync } from 'class-validator';
 import { BaseEntity } from '../../../shared/domain/entities/BaseEntity';
 
 export class HabitEntity extends BaseEntity {
