@@ -1,7 +1,7 @@
 import { Router } from 'express';
-import { HabitDataSourceImpl } from '../infra/local.dataSource.impl';
 import { HabitRepositoryImpl } from '../infra/repository.impl';
 import { HabitController } from './controller';
+import { HabitDataSourceImpl } from '../infra';
 
 export class HabitRoutes {
 	static get routes(): Router {

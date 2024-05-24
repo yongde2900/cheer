@@ -4,7 +4,7 @@ import { HabitRoutes } from './routes';
 import { HabitRepositoryImpl, HabitDataSourceImpl } from '../infra';
 
 jest.mock('../infra/repository.impl.ts');
-jest.mock('../infra/local.dataSource.impl.ts');
+jest.mock('../infra/pq.dataSource.impl.ts');
 
 const mockHabits = [
 	{

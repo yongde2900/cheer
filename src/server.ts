@@ -5,6 +5,7 @@ import http from 'http';
 
 import { HttpCode } from './core/constants';
 import { ErrorMiddleware } from './features/shared/presentation/middlewares/error.middleware';
+import { AppDataSource } from './db/postgres/data-source';
 
 interface ServerOptions {
 	port: number;
@@ -27,6 +28,13 @@ export class Server {
 	}
 
 	async start() {
+		//db init
+		try {
+			await AppDataSource.initialize();
+		} catch (err) {
+			console.log(err);
+		}
+
 		// Middleware
 		this.app.use(express.json());
 		this.app.use(express.urlencoded({ extended: true }));
@@ -43,6 +51,7 @@ export class Server {
 
 		// Routes
 		this.app.use(this.apiPrefix, this.routes);
+		console.log(this.apiPrefix);
 
 		// Test rest api
 		this.app.get(`/`, (_req: Request, res: Response) => {
@@ -59,6 +68,7 @@ export class Server {
 		});
 	}
 
-	async stop() { if (this.server) this.server.close();
+	async stop() {
+		if (this.server) this.server.close();
 	}
 }
