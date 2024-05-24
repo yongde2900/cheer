@@ -2,7 +2,10 @@ import { HabitDataSource, HabitEntity, HabitRepository } from '../domain';
 import { HabitRepositoryImpl } from './';
 
 const mockDataSource: jest.Mocked<HabitDataSource> = {
-	getAll: jest.fn()
+	getAll: jest.fn(),
+	save: jest.fn(),
+	delete: jest.fn(),
+	getById: jest.fn()
 };
 
 describe('HabitRepositoryImpl', () => {

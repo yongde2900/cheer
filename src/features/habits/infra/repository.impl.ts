@@ -9,4 +9,16 @@ export class HabitRepositoryImpl extends HabitRepository {
 	async getAll(): Promise<HabitEntity[]> {
 		return await this.dataSource.getAll();
 	}
+
+	async save(habit: HabitEntity): Promise<void> {
+		return await this.dataSource.save(habit);
+	}
+
+	async delete(habit: HabitEntity): Promise<void> {
+		return await this.dataSource.delete(habit);
+	}
+
+	async getById(id: number): Promise<HabitEntity | null> {
+		return await this.dataSource.getById(id);
+	}
 }
