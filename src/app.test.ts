@@ -1,7 +1,6 @@
 import { Server } from './server';
 import main from './app';
 import { envs } from './core/config/env';
-import { AppRoutes } from './routers';
 
 jest.mock('./server');
 

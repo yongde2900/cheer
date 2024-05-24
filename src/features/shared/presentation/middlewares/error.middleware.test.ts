@@ -1,5 +1,5 @@
 import { ErrorMiddleware } from './error.middleware';
-import { ValidationError, ValidationType, HttpCode, AppError } from '../../../../core/';
+import { ValidationError, HttpCode, AppError } from '../../../../core/';
 import { NextFunction, Request, Response } from 'express';
 
 describe('ErrorMiddleware', () => {

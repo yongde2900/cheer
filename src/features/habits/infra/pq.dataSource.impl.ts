@@ -1,7 +1,7 @@
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../../db/postgres/data-source';
 import { HabitDataSource, HabitEntity } from '../domain';
-import { HabitModel } from '../../../db/postgres/models/habits.model';
+import { HabitModel } from '../../../db/postgres/models';
 
 export class HabitDataSourceImpl extends HabitDataSource {
 	private repository: Repository<HabitEntity>;

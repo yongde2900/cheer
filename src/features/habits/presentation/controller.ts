@@ -1,6 +1,5 @@
 import { type NextFunction, type Request, type Response } from 'express';
 import { type HabitRepository } from '../domain/repositories/repository';
-import { HabitEntity } from '../domain/entities/habit.entity';
 import { GetAllHabit } from '../domain';
 
 export class HabitController {
