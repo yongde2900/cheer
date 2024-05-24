@@ -6,6 +6,7 @@ import http from 'http';
 import { HttpCode } from './core/constants';
 import { ErrorMiddleware } from './features/shared/presentation/middlewares/error.middleware';
 import { AppDataSource } from './db/postgres/data-source';
+import { DataSource } from 'typeorm';
 
 interface ServerOptions {
 	port: number;
@@ -19,6 +20,7 @@ export class Server {
 	private readonly port: number;
 	private readonly routes: Router;
 	private readonly apiPrefix: string;
+	private dataSource!: DataSource;
 
 	constructor(options: ServerOptions) {
 		const { port, routes, apiPrefix } = options;
@@ -30,7 +32,7 @@ export class Server {
 	async start() {
 		//db init
 		try {
-			await AppDataSource.initialize();
+			this.dataSource = await AppDataSource.initialize();
 		} catch (err) {
 			console.log(err);
 		}
@@ -70,5 +72,6 @@ export class Server {
 
 	async stop() {
 		if (this.server) this.server.close();
+		if (this.dataSource) await this.dataSource.destroy();
 	}
 }
