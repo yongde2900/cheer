@@ -1,0 +1,60 @@
+import {
+	Column,
+	CreateDateColumn,
+	Entity,
+	ManyToOne,
+	OneToMany,
+	PrimaryGeneratedColumn,
+	UpdateDateColumn
+} from 'typeorm';
+import { UserHabit } from './UserHabit.model';
+import { HabitContract } from './HabitContract.model';
+
+@Entity('users')
+export class User {
+	@PrimaryGeneratedColumn()
+	id!: number;
+
+	@Column('varchar', {
+		length: 45
+	})
+	name!: string;
+
+	@Column('varchar', {
+		length: 255
+	})
+	email!: string;
+
+	@Column('varchar', {
+		length: 255
+	})
+	password!: string;
+
+	@Column('smallint', {
+		default: 0
+	})
+	sex!: number;
+
+	@Column('int', {
+		unsigned: true
+	})
+	age!: number;
+
+	@Column('date')
+	birthdate!: Date;
+
+	@CreateDateColumn()
+	created_at!: Date;
+
+	@UpdateDateColumn()
+	updated_at!: Date;
+
+	@OneToMany(() => UserHabit, (userHabits) => userHabits.user)
+	userHabits!: UserHabit[];
+
+	@ManyToOne(() => HabitContract, (habitContract) => habitContract.principal)
+	principalHabitContract!: HabitContract;
+
+	@ManyToOne(() => HabitContract, (habitContract) => habitContract.principal)
+	trusteeHabitContract!: HabitContract;
+}

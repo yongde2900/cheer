@@ -1,13 +1,13 @@
 import { Repository } from 'typeorm';
 import { AppDataSource } from '../../../db/postgres/data-source';
 import { HabitDataSource, HabitEntity } from '../domain';
-import { HabitModel } from '../../../db/postgres/models';
+import { Habit } from '../../../db/postgres/models';
 
 export class HabitDataSourceImpl extends HabitDataSource {
 	private repository: Repository<HabitEntity>;
 	constructor() {
 		super();
-		this.repository = AppDataSource.getRepository(HabitModel);
+		this.repository = AppDataSource.getRepository(Habit);
 	}
 
 	async getAll(): Promise<HabitEntity[]> {
