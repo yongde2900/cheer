@@ -16,7 +16,7 @@ describe('UseCase: UserLogin', () => {
 			getById: jest.fn(),
 			getAll: jest.fn(),
 			getByEmail: jest.fn(),
-			editUser: jest.fn()
+			edit: jest.fn()
 		} as jest.Mocked<UserRepository>;
 
 		userLoginUseCase = new UserLoginUseCase(repository);
