@@ -1,6 +1,7 @@
 import { CreateUserDto } from '../dtos/createUser.dto';
 import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from '../repositories/user.repository';
+import mock from '../tests/mock';
 import { CreateUserUseCase } from './createUser.usecase';
 
 describe('UseCase: CreateUser', () => {
@@ -9,14 +10,7 @@ describe('UseCase: CreateUser', () => {
 	let createUserDto: CreateUserDto;
 
 	beforeEach(() => {
-		repository = {
-			create: jest.fn(),
-			delete: jest.fn(),
-			getById: jest.fn(),
-			getAll: jest.fn(),
-			getByEmail: jest.fn(),
-			edit: jest.fn()
-		} as jest.Mocked<UserRepository>;
+		repository = mock.createMockRepository();
 
 		createUserUseCase = new CreateUserUseCase(repository);
 		createUserDto = {

@@ -1,7 +1,7 @@
-import { validateInstance } from "../../../../utils/validateInstance";
+import { validateInstance } from '../../../../utils/validateInstance';
 
-export  class CoreDto<T> {
+export abstract class CoreDto<T> {
 	validate(dto: T): void {
-    validateInstance(dto);
-  }
+		validateInstance(dto);
+	}
 }

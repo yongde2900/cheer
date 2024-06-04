@@ -2,19 +2,13 @@ import { AppError } from '../../../../core';
 import { EditUserDto } from '../dtos';
 import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from '../repositories//user.repository';
+import mock from '../tests/mock';
 import { EditUserUseCase } from './editUser.usecase';
 describe('EditUserUseCase', () => {
 	let useCase: EditUserUseCase;
 	let mockRepository: jest.Mocked<UserRepository>;
 	beforeAll(() => {
-		mockRepository = {
-			create: jest.fn(),
-			delete: jest.fn(),
-			getById: jest.fn(),
-			getAll: jest.fn(),
-			getByEmail: jest.fn(),
-			edit: jest.fn()
-		};
+		mockRepository = mock.createMockRepository();
 		useCase = new EditUserUseCase(mockRepository);
 	});
 	it('should edit a user', async () => {
