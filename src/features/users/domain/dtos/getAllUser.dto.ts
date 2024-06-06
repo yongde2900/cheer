@@ -1,9 +1,15 @@
+import { IsEmail, IsOptional } from 'class-validator';
 import { CoreDto, PaginationDto } from '../../../shared/domain/dtos';
 
 export class GetAllUserDto extends CoreDto<GetAllUserDto> {
 	public readonly pagination: PaginationDto;
-	public readonly name: string | undefined;
-	public readonly email: string | undefined;
+
+	@IsOptional()
+	public readonly name?: string | undefined;
+
+	@IsOptional()
+	@IsEmail()
+	public readonly email?: string | undefined;
 
 	constructor(pagination: PaginationDto, name: string, email: string) {
 		super();
