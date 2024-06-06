@@ -8,16 +8,23 @@ describe('UseCase: CreateUser', () => {
 	let repository: jest.Mocked<UserRepository>;
 	let createUserUseCase: CreateUserUseCase;
 	let createUserDto: CreateUserDto;
+	let hashDto: CreateUserDto;
 
 	beforeEach(() => {
 		repository = mock.createMockRepository();
 
 		createUserUseCase = new CreateUserUseCase(repository);
-		createUserDto = {
+		createUserDto = CreateUserDto.create({
 			name: 'John Doe',
 			email: 'mail@mail.com',
 			password: 'password'
-		};
+		});
+
+		hashDto = CreateUserDto.create({
+			name: 'John Doe',
+			email: 'mail@mail.com',
+			password: 'hashedPassword'
+		});
 	});
 
 	afterEach(() => {
@@ -27,19 +34,19 @@ describe('UseCase: CreateUser', () => {
 	it('should create a user', async () => {
 		const userEntity: UserEntity = UserEntity.fromJson({
 			id: 1,
-			name: 'John Doe',
-			email: 'mail@mail.com',
-			password: 'hashedPassword'
+			name: hashDto.name,
+			email: hashDto.email,
+			password: hashDto.password
 		});
 
-		jest.spyOn(UserEntity, 'hashPassword').mockResolvedValue('hashedPassword');
+		jest.spyOn(UserEntity, 'hashPassword').mockResolvedValue(hashDto.password);
 
 		repository.create.mockResolvedValue(userEntity);
 
 		const result = await createUserUseCase.execute(createUserDto);
 
-		expect(repository.create).toHaveBeenCalledWith(createUserDto);
-		expect(UserEntity.hashPassword).toHaveBeenCalledWith('password');
+		expect(repository.create).toHaveBeenCalledWith(hashDto);
+		expect(UserEntity.hashPassword).toHaveBeenCalledWith(createUserDto.password);
 		expect(result).toEqual(userEntity);
 	});
 
