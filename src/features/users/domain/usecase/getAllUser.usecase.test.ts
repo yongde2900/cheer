@@ -1,6 +1,6 @@
 import { GetAllUserDto } from '../dtos';
 import { UserEntity } from '../entities/user.entity';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../repositories/repository';
 import mock from '../tests/mock';
 import { GetAllUserUseCase } from './getAllUser.usecase';
 

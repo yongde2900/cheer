@@ -1,7 +1,7 @@
 import { AppError } from '../../../../core';
 import { UserLoginDto } from '../dtos';
 import { UserEntity } from '../entities/user.entity';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../repositories/repository';
 
 export class UserLoginUseCase {
 	constructor(private userRepository: UserRepository) {}

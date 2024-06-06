@@ -1,7 +1,7 @@
 import { AppError } from '../../../../core';
 import { EditUserDto } from '../dtos';
 import { UserEntity } from '../entities/user.entity';
-import { UserRepository } from '../repositories//user.repository';
+import { UserRepository } from '../repositories/repository';
 import mock from '../tests/mock';
 import { EditUserUseCase } from './editUser.usecase';
 describe('EditUserUseCase', () => {

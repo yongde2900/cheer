@@ -1,4 +1,4 @@
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../repositories/repository';
 import { GetUserUseCase } from './getUser.usecase';
 import mock from '../tests/mock';
 import { UserEntity } from '../entities/user.entity';

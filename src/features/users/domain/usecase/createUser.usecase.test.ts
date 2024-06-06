@@ -1,6 +1,6 @@
 import { CreateUserDto } from '../dtos/createUser.dto';
 import { UserEntity } from '../entities/user.entity';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../repositories/repository';
 import mock from '../tests/mock';
 import { CreateUserUseCase } from './createUser.usecase';
 

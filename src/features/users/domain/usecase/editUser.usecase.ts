@@ -1,6 +1,6 @@
 import { EditUserDto } from '../dtos/editUser.dto';
 import { UserEntity } from '../entities/user.entity';
-import { UserRepository } from '../repositories/user.repository';
+import { UserRepository } from '../repositories/repository';
 
 export class EditUserUseCase {
 	constructor(private userRepository: UserRepository) {}

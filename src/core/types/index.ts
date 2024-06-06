@@ -1,12 +1,12 @@
-import { ValidationType } from "../errors";
+import { ValidationType } from '../errors';
 
 export interface SuccessResponse<T> {
 	data?: T;
 }
 
 export interface ErrorResponse {
-  name: string;
-  message: string;
-  ValidationErrors?: ValidationType;
-  stack?: string;
+	name: string;
+	message: string;
+	ValidationErrors?: ValidationType;
+	stack?: string;
 }
