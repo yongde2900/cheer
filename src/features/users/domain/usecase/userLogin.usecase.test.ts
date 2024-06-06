@@ -14,10 +14,11 @@ describe('UseCase: UserLogin', () => {
 		repository = mock.createMockRepository();
 
 		userLoginUseCase = new UserLoginUseCase(repository);
-		userLoginDto = {
+		const data = {
 			email: 'mail@mail.com',
 			password: 'password'
 		};
+		userLoginDto = new UserLoginDto(data.email, data.password);
 		userEntity = UserEntity.fromJson({
 			id: 1,
 			name: 'John Doe',
@@ -49,9 +50,9 @@ describe('UseCase: UserLogin', () => {
 
 	it('shold throw unauthorized error if password is incorrect', async () => {
 		repository.getByEmail.mockResolvedValue(userEntity);
-		userLoginDto.password = 'wrongPassword';
+    const wrongPasswordDto = new UserLoginDto(userLoginDto.email, 'wrongPassword');
 
-		expect(userLoginUseCase.execute(userLoginDto)).rejects.toThrow('Invalid password');
+		expect(userLoginUseCase.execute(wrongPasswordDto)).rejects.toThrow('Invalid password');
 		expect(repository.getByEmail).toHaveBeenCalledWith(userLoginDto.email);
 	});
 });
