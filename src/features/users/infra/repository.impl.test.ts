@@ -112,20 +112,20 @@ describe('UserRepositoryImpl', () => {
 		});
 		it('should get all users through pqDataSource', async () => {
 			redisDataSource.getAll.mockResolvedValueOnce(null);
-			pqDataSource.getAll.mockResolvedValueOnce([user]);
+			pqDataSource.getAll.mockResolvedValueOnce({ data: [user], total: 1 });
 			const result = await repository.getAll(getAllUserDto);
 
-			expect(result).toEqual([user]);
+			expect(result).toEqual({ data: [user], total: 1 });
 			expect(redisDataSource.getAll).toHaveBeenCalledWith(getAllUserDto);
 			expect(pqDataSource.getAll).toHaveBeenCalled();
-			expect(redisDataSource.setAll).toHaveBeenCalledWith(getAllUserDto, [user]);
+			expect(redisDataSource.setAll).toHaveBeenCalledWith(getAllUserDto, {data:[user],total:1});
 		});
 
 		it('should get all users through redisDataSource', async () => {
-			redisDataSource.getAll.mockResolvedValueOnce([user]);
+			redisDataSource.getAll.mockResolvedValueOnce({ data: [user], total: 1 });
 
 			const result = await repository.getAll(getAllUserDto);
-			expect(result).toEqual([user]);
+			expect(result).toEqual({ data: [user], total: 1 });
 			expect(redisDataSource.getAll).toHaveBeenCalledWith(getAllUserDto);
 			expect(pqDataSource.getAll).not.toHaveBeenCalled();
 		});

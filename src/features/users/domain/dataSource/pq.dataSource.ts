@@ -5,7 +5,7 @@ export interface PqUserDataSource {
 	create(createDto: CreateUserDto): Promise<UserEntity>;
 	delete(id: number): Promise<void>;
 	getById(id: number): Promise<UserEntity | null>;
-	getAll(getAllUserDto: GetAllUserDto): Promise<UserEntity[]>;
+	getAll(getAllUserDto: GetAllUserDto): Promise<{ data: UserEntity[]; total: number }>;
 	getByEmail(email: string): Promise<UserEntity | null>;
 	edit(user: EditUserDto): Promise<UserEntity>;
 }

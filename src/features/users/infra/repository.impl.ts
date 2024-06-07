@@ -40,13 +40,13 @@ export class UserRepositoryImpl implements UserRepository {
 		return user;
 	}
 
-	async getAll(getAllUserDto: GetAllUserDto): Promise<UserEntity[]> {
-		let users = await this.redisDataSource.getAll(getAllUserDto);
-		if (!users) {
-			users = await this.pqDataSource.getAll(getAllUserDto);
-			await this.redisDataSource.setAll(getAllUserDto, users);
+	async getAll(getAllUserDto: GetAllUserDto): Promise<{ data: UserEntity[]; total: number }> {
+		let result = await this.redisDataSource.getAll(getAllUserDto);
+		if (!result) {
+			result = await this.pqDataSource.getAll(getAllUserDto);
+			await this.redisDataSource.setAll(getAllUserDto, result);
 		}
-		return users;
+		return result;
 	}
 
 	async getByEmail(email: string): Promise<UserEntity | null> {

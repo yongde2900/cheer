@@ -5,8 +5,8 @@ export interface RedisUserDataSource {
 	getById(id: number): Promise<UserEntity | null>;
 	setUser(user: UserEntity): Promise<void>;
 	unSetUser(id: number): Promise<void>;
-	getAll(getAllUserDto: GetAllUserDto): Promise<UserEntity[] | null>;
-	setAll(getAllUserDto: GetAllUserDto, users: UserEntity[]): Promise<void>;
+	getAll(getAllUserDto: GetAllUserDto): Promise<{ data: UserEntity[]; total: number } | null>;
+	setAll(getAllUserDto: GetAllUserDto, users: { data: UserEntity[]; total: number }): Promise<void>;
 	invalidateListCache(): Promise<void>;
 	invalidateUserCache(id: number): Promise<void>;
 }

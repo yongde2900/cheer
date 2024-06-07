@@ -26,11 +26,11 @@ describe('GetAllUserUseCase', () => {
 				email: 'mail@mail.com'
 			}
 		].map((user) => UserEntity.fromJson(user));
-		mockRepository.getAll.mockResolvedValueOnce(users);
+		mockRepository.getAll.mockResolvedValueOnce({ data: users, total: 2 });
 		const getAllUserDto = GetAllUserDto.create({ page: 1, limit: 10 });
 		const result = await useCase.execute(getAllUserDto);
 
-		expect(result).toEqual(users);
+		expect(result).toEqual({ data: users, total: 2 });
 		expect(mockRepository.getAll).toHaveBeenCalledWith(getAllUserDto);
 	});
 
