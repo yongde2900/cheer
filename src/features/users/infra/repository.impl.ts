@@ -10,7 +10,12 @@ export class UserRepositoryImpl implements UserRepository {
 	) {}
 
 	async create(createDto: CreateUserDto): Promise<UserEntity> {
-		const user = await this.pqDataSource.create(createDto);
+		let user = await this.pqDataSource.getByEmail(createDto.email);
+		if (user) {
+			throw AppError.badRequest('User already exists');
+		}
+
+		user = await this.pqDataSource.create(createDto);
 		await this.redisDataSource.invalidateListCache();
 		return user;
 	}

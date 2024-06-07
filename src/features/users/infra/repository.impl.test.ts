@@ -38,20 +38,30 @@ describe('UserRepositoryImpl', () => {
 		});
 	});
 	describe('create', () => {
-		it('should create a user', async () => {
-			pqDataSource.create.mockResolvedValueOnce(user);
+		let createUserDto: CreateUserDto;
 
-			const createUserDto = CreateUserDto.create({
+		beforeAll(() => {
+			createUserDto = CreateUserDto.create({
 				name: 'John Doe',
 				email: 'some@mail.com',
 				password: 'password'
 			});
+		});
+
+		it('should create a user', async () => {
+			pqDataSource.create.mockResolvedValueOnce(user);
 
 			const result = await repository.create(createUserDto);
 
 			expect(result).toEqual(user);
 			expect(pqDataSource.create).toHaveBeenCalledWith(createUserDto);
 			expect(redisDataSource.invalidateListCache).toHaveBeenCalled();
+		});
+
+		it('should throw an error when user already exists', async () => {
+			pqDataSource.getByEmail.mockResolvedValueOnce(user);
+
+			expect(repository.create(createUserDto)).rejects.toThrow(AppError.badRequest('User already exists'));
 		});
 	});
 
