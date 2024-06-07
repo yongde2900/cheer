@@ -21,7 +21,8 @@ export class User {
 	name!: string;
 
 	@Column('varchar', {
-		length: 255
+		length: 255,
+		unique: true
 	})
 	email!: string;
 
@@ -31,16 +32,19 @@ export class User {
 	password!: string;
 
 	@Column('smallint', {
-		default: 0
+		default: 3
 	})
 	sex!: number;
 
 	@Column('int', {
-		unsigned: true
+		unsigned: true,
+		nullable: true
 	})
 	age!: number;
 
-	@Column('date')
+	@Column('date', {
+		nullable: true
+	})
 	birthdate!: Date;
 
 	@CreateDateColumn()
