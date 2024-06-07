@@ -14,6 +14,14 @@ export const validateInstance = <T>(instance: T): void => {
 					constraint: Object.values(error.constraints).join(', ')
 				};
 			}
+
+			if (error.children && error.children[0].constraints) {
+				return {
+					field: `${error.property}.${error.children[0].property}`,
+					constraint: Object.values(error.children[0].constraints).join(', ')
+				};
+			}
+
 			throw AppError.internalServer('Error constraints is undefined');
 		});
 		throw new ValidationError(validationErrors);
