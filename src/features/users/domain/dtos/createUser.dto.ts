@@ -10,38 +10,38 @@ export class CreateUserDto extends CoreDto<CreateUserDto> {
 
 	public readonly password: string;
 
-  @IsOptional()
+	@IsOptional()
 	@IsIn(Object.values(Sex))
 	public readonly sex?: number;
 
-  @IsOptional()
+	@IsOptional()
 	@IsInt({ message: '必須為數字' })
 	public readonly age?: number;
 
-  @IsOptional()
+	@IsOptional()
 	@IsDate()
-	public readonly birthday?: Date;
+	public readonly birthdate?: Date;
 
-	constructor(name: string, email: string, password: string, sex?: number, age?: number, birthday?: Date) {
+	constructor(name: string, email: string, password: string, sex?: number, age?: number, birthdate?: Date) {
 		super();
 		this.name = name;
 		this.email = email;
 		this.password = password;
 		this.sex = sex;
 		this.age = age;
-		this.birthday = birthday;
+		this.birthdate = birthdate;
 		this.validate(this);
 	}
 
 	static create(obj: Record<string, unknown>): CreateUserDto {
-		const { name, email, password, sex, age, birthday } = obj;
+		const { name, email, password, sex, age, birthdate } = obj;
 		return new CreateUserDto(
 			name as string,
 			email as string,
 			password as string,
 			sex as number,
 			age as number,
-			birthday as Date
+			birthdate as Date
 		);
 	}
 }

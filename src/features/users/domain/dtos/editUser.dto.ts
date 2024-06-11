@@ -26,7 +26,7 @@ export class EditUserDto extends CoreDto<EditUserDto> {
 
 	@IsOptional()
 	@IsDate()
-	public readonly birthday?: Date;
+	public readonly birthdate?: Date;
 
 	constructor(
 		id: number,
@@ -35,7 +35,7 @@ export class EditUserDto extends CoreDto<EditUserDto> {
 		password?: string,
 		sex?: number,
 		age?: number,
-		birthday?: Date
+		birthdate?: Date
 	) {
 		super();
 		this.id = id;
@@ -44,12 +44,12 @@ export class EditUserDto extends CoreDto<EditUserDto> {
 		this.password = password;
 		this.sex = sex;
 		this.age = age;
-		this.birthday = birthday;
+		this.birthdate = birthdate;
 		this.validate(this);
 	}
 
 	static create(obj: Record<string, unknown>): EditUserDto {
-		const { id, name, email, password, sex, age, birthday } = obj;
+		const { id, name, email, password, sex, age, birthdate } = obj;
 		return new EditUserDto(
 			id as number,
 			name as string,
@@ -57,7 +57,7 @@ export class EditUserDto extends CoreDto<EditUserDto> {
 			password as string,
 			sex as number,
 			age as number,
-			birthday as Date
+			birthdate as Date
 		);
 	}
 }

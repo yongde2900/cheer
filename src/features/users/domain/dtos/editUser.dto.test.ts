@@ -11,7 +11,7 @@ describe('EditUserDto', () => {
 			password: '123456',
 			sex: 1,
 			age: 20,
-			birthday: new Date('2021-01-01')
+			birthdate: new Date('2021-01-01')
 		};
 		const editUserDto = EditUserDto.create(userData);
 		expect(editUserDto).toBeTruthy();
@@ -21,10 +21,10 @@ describe('EditUserDto', () => {
 		expect(editUserDto.password).toBe('123456');
 		expect(editUserDto.sex).toBe(1);
 		expect(editUserDto.age).toBe(20);
-		if (editUserDto.birthday) {
-			expect(editUserDto.birthday.toISOString()).toBe(new Date('2021-01-01').toISOString());
+		if (editUserDto.birthdate) {
+			expect(editUserDto.birthdate.toISOString()).toBe(new Date('2021-01-01').toISOString());
 		} else {
-			fail('birthday is null');
+			fail('birthdate is null');
 		}
 	});
 
