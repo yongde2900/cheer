@@ -1,12 +1,12 @@
 import { AppError } from '../../../../core';
+import { generateToken } from '../../../../utils/generateToken';
 import { UserLoginDto } from '../dtos';
-import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from '../repositories/repository';
 
 export class UserLoginUseCase {
 	constructor(private userRepository: UserRepository) {}
 
-	async execute(userLoginDto: UserLoginDto): Promise<UserEntity> {
+	async execute(userLoginDto: UserLoginDto): Promise<string> {
 		const user = await this.userRepository.getByEmail(userLoginDto.email);
 		if (!user) {
 			throw AppError.notFound('User not found');
@@ -15,6 +15,8 @@ export class UserLoginUseCase {
 		if (!isPasswordCorrect) {
 			throw AppError.unauthorized('Invalid password');
 		}
-		return user;
+		const token = generateToken(user.id);
+
+		return token;
 	}
 }

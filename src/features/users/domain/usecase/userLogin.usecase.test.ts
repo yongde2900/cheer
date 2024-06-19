@@ -3,6 +3,14 @@ import { UserEntity } from '../entities/user.entity';
 import { UserRepository } from '../repositories/repository';
 import mock from '../tests/mock';
 import { UserLoginUseCase } from './userLogin.usecase';
+import { generateToken } from '../../../../utils/generateToken';
+
+jest.mock('../../../../utils/generateToken', () => ({
+	__esModule: true,
+	generateToken: jest.fn()
+}));
+
+const mockGenerateToken = generateToken as jest.MockedFunction<typeof generateToken>;
 
 describe('UseCase: UserLogin', () => {
 	let repository: jest.Mocked<UserRepository>;
@@ -37,10 +45,12 @@ describe('UseCase: UserLogin', () => {
 
 	it('shold login a user', async () => {
 		repository.getByEmail.mockResolvedValue(userEntity);
+		mockGenerateToken.mockReturnValue('token');
 		const result = await userLoginUseCase.execute(userLoginDto);
 
 		expect(repository.getByEmail).toHaveBeenCalledWith(userLoginDto.email);
-		expect(result).toEqual(userEntity);
+		expect(mockGenerateToken).toHaveBeenCalledWith(userEntity.id);
+		expect(result).toEqual('token');
 	});
 
 	it('shold throw not found error if user does not exist', async () => {
@@ -50,7 +60,7 @@ describe('UseCase: UserLogin', () => {
 
 	it('shold throw unauthorized error if password is incorrect', async () => {
 		repository.getByEmail.mockResolvedValue(userEntity);
-    const wrongPasswordDto = new UserLoginDto(userLoginDto.email, 'wrongPassword');
+		const wrongPasswordDto = new UserLoginDto(userLoginDto.email, 'wrongPassword');
 
 		expect(userLoginUseCase.execute(wrongPasswordDto)).rejects.toThrow('Invalid password');
 		expect(repository.getByEmail).toHaveBeenCalledWith(userLoginDto.email);
