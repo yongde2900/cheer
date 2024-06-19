@@ -13,4 +13,9 @@ export class UserLoginDto extends CoreDto<UserLoginDto> {
 		this.password = password;
 		this.validate(this);
 	}
+
+	public static create(obj: Record<string, unknown>): UserLoginDto {
+		const { email, password } = obj;
+		return new UserLoginDto(email as string, password as string);
+	}
 }
