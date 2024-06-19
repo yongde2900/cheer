@@ -5,13 +5,13 @@ import http from 'http';
 
 import { HttpCode } from './core/constants';
 import { ErrorMiddleware } from './features/shared/presentation/middlewares/error.middleware';
-import { AppDataSource } from './db/postgres/data-source';
 import { DataSource } from 'typeorm';
 
 interface ServerOptions {
 	port: number;
 	routes: Router;
 	apiPrefix: string;
+	pqDataSource: DataSource;
 }
 
 export class Server {
@@ -23,16 +23,17 @@ export class Server {
 	private dataSource!: DataSource;
 
 	constructor(options: ServerOptions) {
-		const { port, routes, apiPrefix } = options;
+		const { port, routes, apiPrefix, pqDataSource } = options;
 		this.port = port;
 		this.routes = routes;
 		this.apiPrefix = apiPrefix;
+		this.dataSource = pqDataSource;
 	}
 
 	async start() {
 		//db init
 		try {
-			this.dataSource = await AppDataSource.initialize();
+			this.dataSource.initialize();
 		} catch (err) {
 			console.log(err);
 		}
