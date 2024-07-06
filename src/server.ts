@@ -6,12 +6,14 @@ import http from 'http';
 import { HttpCode } from './core/constants';
 import { ErrorMiddleware } from './features/shared/presentation/middlewares/error.middleware';
 import { DataSource } from 'typeorm';
+import { Redis } from 'ioredis';
 
 interface ServerOptions {
 	port: number;
 	routes: Router;
 	apiPrefix: string;
 	pqDataSource: DataSource;
+	redisDataSource: Redis;
 }
 
 export class Server {
@@ -20,20 +22,22 @@ export class Server {
 	private readonly port: number;
 	private readonly routes: Router;
 	private readonly apiPrefix: string;
-	private dataSource!: DataSource;
+	private readonly pq: DataSource;
+	private readonly redis: Redis;
 
 	constructor(options: ServerOptions) {
-		const { port, routes, apiPrefix, pqDataSource } = options;
+		const { port, routes, apiPrefix, pqDataSource, redisDataSource } = options;
 		this.port = port;
 		this.routes = routes;
 		this.apiPrefix = apiPrefix;
-		this.dataSource = pqDataSource;
+		this.pq = pqDataSource;
+		this.redis = redisDataSource;
 	}
 
 	async start() {
 		//db init
 		try {
-			this.dataSource.initialize();
+			this.pq.initialize();
 		} catch (err) {
 			console.log(err);
 		}
@@ -73,6 +77,7 @@ export class Server {
 
 	async stop() {
 		if (this.server) this.server.close();
-		if (this.dataSource) await this.dataSource.destroy();
+		if (this.pq) await this.pq.destroy();
+		if (this.redis) this.redis.disconnect();
 	}
 }

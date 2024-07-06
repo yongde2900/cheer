@@ -8,7 +8,7 @@ export const AppDataSource = new DataSource({
 	password: 'password',
 	database: 'cheer',
 	synchronize: true,
-	logging: true,
+	logging: false,
 	entities: [__dirname + '/models/**/*.model.ts'],
 	subscribers: [],
 	migrations: [__dirname + '/migrations/**/*.ts']

@@ -1,5 +1,6 @@
 import { envs } from './core/config/env';
 import { AppDataSource } from './db/postgres/data-source';
+import redis from './db/redis/redis';
 import { AppRoutes } from './routers';
 import { Server } from './server';
 import 'reflect-metadata';
@@ -12,11 +13,15 @@ export default function main(): void {
 	// 資料庫連接
 	const pqDataSource = AppDataSource;
 
+	// redis 連接
+	const redisDataSource = redis;
+
 	const server = new Server({
-		routes: AppRoutes.routes(pqDataSource),
+		routes: AppRoutes.routes(pqDataSource, redisDataSource),
 		port: envs.PORT,
 		apiPrefix: envs.API_PREFIX,
-		pqDataSource
+		pqDataSource,
+		redisDataSource
 	});
 	server.start();
 }

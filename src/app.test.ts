@@ -1,24 +1,41 @@
-import { Server } from './server';
-import main from './app';
-import { envs } from './core/config/env';
+import { AppDataSource } from '../src/db/postgres/data-source';
+import redis from '../src/db/redis/redis';
+import { Server } from '../src/server';
+import { AppRoutes } from '../src/routers';
+import main from '../src/app';
+import { envs } from './core';
 
-jest.mock('./server');
-
-const MockedServer = Server as jest.MockedClass<typeof Server>;
+// Mock the dependencies
+jest.mock('../src/db/postgres/data-source', () => ({
+	AppDataSource: jest.fn().mockReturnValue({})
+}));
+jest.mock('../src/db/redis/redis', () => jest.fn().mockReturnValue({}));
+jest.mock('../src/server');
+jest.mock('../src/routers', () => ({
+	AppRoutes: {
+		routes: jest.fn().mockReturnValue([])
+	}
+}));
 
 describe('Main Function', () => {
-	it('should create and start the server with correct configuration', () => {
+	let mockStart: jest.Mock;
+
+	beforeEach(() => {
+		mockStart = jest.fn();
+		Server.prototype.start = mockStart;
+	});
+
+	it('should initialize the server with the correct configuration', async () => {
 		main();
 
-		expect(MockedServer).toHaveBeenCalledWith({
+		expect(AppRoutes.routes).toHaveBeenCalledWith(AppDataSource, redis);
+		expect(Server).toHaveBeenCalledWith({
+			routes: expect.any(Array),
 			port: envs.PORT,
-      routes: expect.any(Function),
-			apiPrefix: envs.API_PREFIX
+			apiPrefix: envs.API_PREFIX,
+			pqDataSource: AppDataSource,
+			redisDataSource: redis
 		});
-
-		const instance = MockedServer.mock.instances[0];
-		const mockStart = instance.start;
-
 		expect(mockStart).toHaveBeenCalled();
 	});
 });

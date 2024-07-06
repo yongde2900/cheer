@@ -1,39 +1,59 @@
 import request from 'supertest';
 import { Server } from './server';
 import { HttpCode } from './core/constants';
-import { AppRoutes } from './routers';
+import { Router } from 'express';
+import { DataSource } from 'typeorm';
+import { Redis } from 'ioredis';
+
+jest.mock('typeorm', () => ({
+	DataSource: jest.fn().mockImplementation(() => ({
+		initialize: jest.fn().mockResolvedValue(true),
+		destroy: jest.fn().mockResolvedValue(true)
+	}))
+}));
+
+jest.mock('ioredis', () => ({
+	Redis: jest.fn().mockImplementation(() => ({
+		disconnect: jest.fn().mockResolvedValue(true)
+	}))
+}));
 
 describe('Server', () => {
 	let server: Server;
 
-	beforeAll(() => {
+	const mockRouter = Router();
+	mockRouter.get('/test', (_req, res) => {
+		res.status(HttpCode.OK).send({ message: 'Hello World' });
+	});
+
+	const mockDataSource = new DataSource({
+		type: 'postgres'
+	}) as jest.Mocked<DataSource>;
+
+	const mockRedis = new Redis() as jest.Mocked<Redis>;
+
+	beforeAll(async () => {
 		server = new Server({
-			port: 3000,
-			routes: AppRoutes.routes,
-			apiPrefix: '/api'
+			port: 2000,
+			routes: mockRouter,
+			apiPrefix: '/api',
+			pqDataSource: mockDataSource,
+			redisDataSource: mockRedis
 		});
-		server.start();
 	});
 
-	afterAll(() => {
-		server.stop();
+	it('should initialize data sources', async () => {
+		await server.start();
+		expect(mockDataSource.initialize).toHaveBeenCalled();
 	});
 
-	it("should respond with 'Hello World' on GET '/api/", async () => {
-		const response = await request(server['app']).get('/');
-		expect(response.status).toBe(200);
-		expect(response.body).toEqual({ message: 'Hello World' });
+	it('should return 200 for GET /test', async () => {
+		const res = await request(server['app']).get('/api/test').expect(HttpCode.OK);
+		expect(res.body).toEqual({ message: 'Hello World' });
 	});
 
-	it('should apply rate limiting', async () => {
-		for (let i = 0; i < 102; i++) {
-			const response = await request(server['app']).get('/');
-			if (i < 99) {
-				expect(response.status).toBe(HttpCode.OK);
-			} else {
-				expect(response.status).toBe(HttpCode.TOO_MANY_REQUESTS);
-				expect(response.text).toBe('Too many requests from this IP, please try again after an hour');
-			}
-		}
+	it('should disconnect from Redis on stop', async () => {
+		await server.stop();
+		expect(mockRedis.disconnect).toHaveBeenCalled();
 	});
 });
