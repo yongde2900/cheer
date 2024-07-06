@@ -1,13 +1,16 @@
-import { IsDate, IsEmail, IsIn, IsInt, IsOptional } from 'class-validator';
+import { IsDate, IsEmail, IsIn, IsInt, IsOptional, IsString, MinLength } from 'class-validator';
 import { CoreDto } from '../../../shared/domain/dtos';
 import { Sex } from '../../../shared/domain/enums';
 
 export class CreateUserDto extends CoreDto<CreateUserDto> {
+	@IsString({ message: '必須為字串' })
 	public readonly name: string;
 
 	@IsEmail({}, { message: '必須為email格式' })
 	public readonly email: string;
 
+	@IsString({ message: '必須為字串' })
+	@MinLength(6, { message: '最小長度為6' })
 	public readonly password: string;
 
 	@IsOptional()

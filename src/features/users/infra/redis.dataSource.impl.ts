@@ -43,6 +43,7 @@ export class RedisUserDataSourceImpl implements RedisUserDataSource {
 
 	async invalidateListCache(): Promise<void> {
 		const keys = await this.redis.keys('user:list*');
+		if (keys.length === 0) return;
 		await this.redis.del(...keys);
 	}
 
