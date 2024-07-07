@@ -23,6 +23,20 @@ const options: Options = {
 				url: 'http://api.localhost/v1',
 				description: 'Development server'
 			}
+		],
+		components: {
+			securitySchemes: {
+				bearerAuth: {
+					type: 'http',
+					scheme: 'bearer',
+					bearerFormat: 'JWT'
+				}
+			}
+		},
+		security: [
+			{
+				bearerAuth: []
+			}
 		]
 	}
 };

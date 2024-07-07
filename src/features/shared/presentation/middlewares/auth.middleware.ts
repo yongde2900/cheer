@@ -2,8 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import { envs } from '../../../../core';
 import jwt from 'jsonwebtoken';
 
-interface JwtPayload {
-	id: string;
+export interface JwtPayload {
+	id: number;
+	name: string;
 }
 
 export class AuthMiddleware {

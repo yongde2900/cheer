@@ -11,6 +11,7 @@ import {
 	UserLoginUseCase,
 	UserRepository
 } from '../domain';
+import { AppError } from '../../../core';
 
 export class UserController {
 	constructor(private readonly userRepository: UserRepository) {}
@@ -63,6 +64,19 @@ export class UserController {
 			const dto = UserLoginDto.create(req.body);
 			const result = await new UserLoginUseCase(this.userRepository).execute(dto);
 			res.json(result);
+		} catch (err) {
+			next(err);
+		}
+	};
+
+	public me = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+		try {
+			if (!req.userInfo) {
+				throw AppError.forbidden('Access denied');
+			}
+
+			const result = await new GetUserUseCase(this.userRepository).execute(req.userInfo.id);
+			res.json(result.toJSON());
 		} catch (err) {
 			next(err);
 		}

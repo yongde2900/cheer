@@ -4,6 +4,7 @@ import { User } from '../../../db/postgres/models';
 import { PqUserDataSourceImpl, UserRepositoryImpl, RedisUserDataSourceImpl } from '../infra';
 import { UserController } from './controller';
 import { Redis } from 'ioredis';
+import { AuthMiddleware } from '../../shared/presentation/middlewares/auth.middleware';
 
 /*
  * @swagger
@@ -103,29 +104,6 @@ export class UserRoutes {
 		 *                   example: 1
 		 */
 		router.get('/', controller.getAll);
-		/**
-		 * @swagger
-		 * /users/{id}:
-		 *   get:
-		 *     summary: Retrieve a user by id
-		 *     tags: [Users]
-		 *     parameters:
-		 *       - name: id
-		 *         in: path
-		 *         description: The id of the user
-		 *         required: true
-		 *         schema:
-		 *           type: integer
-		 *     responses:
-		 *       200:
-		 *         description: A list of users
-		 *         content:
-		 *           application/json:
-		 *             schema:
-		 *               type: object
-		 *               $ref: '#/components/schemas/User'
-		 */
-		router.get('/:id', controller.get);
 		/**
 		 * @swagger
 		 * /users:
@@ -248,6 +226,48 @@ export class UserRoutes {
 		 *               example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsImlhdCI6MTYxNzIwNjIwMCwiZXhwIjoxNjE3MjA2MjAwfQ.1'
 		 */
 		router.post('/login', controller.login);
+
+		/**
+		 * @swagger
+		 * /users/me:
+		 *   get:
+		 *     summary: Retrieve the current user
+		 *     tags: [Users]
+		 *     security:
+		 *       - bearerAuth: []
+		 *     responses:
+		 *       200:
+		 *         description: The current user
+		 *         content:
+		 *           application/json:
+		 *             schema:
+		 *               $ref: '#/components/schemas/User'
+		 */
+		router.get('/me', AuthMiddleware.authenticate, controller.me);
+
+		/**
+		 * @swagger
+		 * /users/{id}:
+		 *   get:
+		 *     summary: Retrieve a user by id
+		 *     tags: [Users]
+		 *     parameters:
+		 *       - name: id
+		 *         in: path
+		 *         description: The id of the user
+		 *         required: true
+		 *         schema:
+		 *           type: integer
+		 *     responses:
+		 *       200:
+		 *         description: A list of users
+		 *         content:
+		 *           application/json:
+		 *             schema:
+		 *               type: object
+		 *               $ref: '#/components/schemas/User'
+		 */
+		router.get('/:id', controller.get);
 
 		return router;
 	}

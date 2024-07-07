@@ -15,7 +15,7 @@ export class UserLoginUseCase {
 		if (!isPasswordCorrect) {
 			throw AppError.unauthorized('Invalid password');
 		}
-		const token = generateToken(user.id);
+		const token = generateToken(user.id, user.name);
 
 		return token;
 	}

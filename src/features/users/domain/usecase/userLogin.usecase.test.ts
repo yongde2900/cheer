@@ -49,7 +49,7 @@ describe('UseCase: UserLogin', () => {
 		const result = await userLoginUseCase.execute(userLoginDto);
 
 		expect(repository.getByEmail).toHaveBeenCalledWith(userLoginDto.email);
-		expect(mockGenerateToken).toHaveBeenCalledWith(userEntity.id);
+		expect(mockGenerateToken).toHaveBeenCalledWith(userEntity.id, userEntity.name);
 		expect(result).toEqual('token');
 	});
 
