@@ -16,7 +16,8 @@ export class PaginationDto extends CoreDto<PaginationDto> {
 	}
 
 	public static create(obj: Record<string, unknown>) {
-		const { page, limit } = obj;
+		const page = obj.page || 1;
+		const limit = obj.limit || 10;
 		return new PaginationDto(Number(page), Number(limit));
 	}
 }
