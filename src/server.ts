@@ -3,6 +3,9 @@ import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import http from 'http';
 
+import swaggerUi from 'swagger-ui-express';
+import specs from './swaggerConfig';
+
 import { HttpCode } from './core/constants';
 import { ErrorMiddleware } from './features/shared/presentation/middlewares/error.middleware';
 import { DataSource } from 'typeorm';
@@ -42,10 +45,10 @@ export class Server {
 			console.log(err);
 		}
 
-		// Middleware
-		this.app.use(express.json());
-		this.app.use(express.urlencoded({ extended: true }));
-		this.app.use(compression());
+		// 信任一層代理 也就是nginx 取得用戶真實ip
+		this.app.set('trust proxy', 1);
+
+		//rate limit
 		this.app.use(
 			rateLimit({
 				max: 100,
@@ -53,6 +56,11 @@ export class Server {
 				message: 'Too many requests from this IP, please try again after an hour'
 			})
 		);
+
+		// Middleware
+		this.app.use(express.json());
+		this.app.use(express.urlencoded({ extended: true }));
+		this.app.use(compression());
 
 		//cors
 
@@ -69,6 +77,9 @@ export class Server {
 
 		// Error Middleware
 		this.routes.use(ErrorMiddleware.handelError);
+
+		//swagger
+		this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 		this.server = this.app.listen(this.port, () => {
 			console.log(`Server  running on Port: ${this.port}`);
