@@ -2,6 +2,7 @@ import express, { Router, type Request, type Response } from 'express';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import http from 'http';
+import cors from 'cors';
 
 import swaggerUi from 'swagger-ui-express';
 import specs from './swaggerConfig';
@@ -63,6 +64,7 @@ export class Server {
 		this.app.use(compression());
 
 		//cors
+		this.app.use(cors());
 
 		// Routes
 		this.app.use(this.apiPrefix, this.routes);
