@@ -4,6 +4,15 @@ import { compare, hash } from 'bcryptjs';
 import { Sex } from '../../../shared/domain/enums';
 import { User } from '../../../../db/postgres/models';
 
+export interface UserDTO {
+	id: number;
+	name: string;
+	email: string;
+	sex?: number;
+	age?: number;
+	birthdate?: Date;
+}
+
 export class UserEntity extends BaseEntity {
 	public id: number;
 
@@ -63,5 +72,16 @@ export class UserEntity extends BaseEntity {
 
 	public async comparePassword(password: string): Promise<boolean> {
 		return await compare(password, this.password);
+	}
+
+	public toJSON(): UserDTO {
+		return {
+			id: this.id,
+			name: this.name,
+			email: this.email,
+			sex: this.sex,
+			age: this.age,
+			birthdate: this.birthdate
+		};
 	}
 }

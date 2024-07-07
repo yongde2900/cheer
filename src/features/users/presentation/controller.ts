@@ -40,7 +40,9 @@ export class UserController {
 		try {
 			const dto = GetAllUserDto.create(req.query);
 			const result = await new GetAllUserUseCase(this.userRepository).execute(dto);
-			res.json(result);
+			const data = result.data.map((user) => user.toJSON());
+
+			res.json({ data, total: result.total });
 		} catch (err) {
 			next(err);
 		}
@@ -50,7 +52,7 @@ export class UserController {
 		try {
 			const id = Number(req.params.id);
 			const result = await new GetUserUseCase(this.userRepository).execute(id);
-			res.json(result);
+			res.json(result.toJSON());
 		} catch (err) {
 			next(err);
 		}
