@@ -38,7 +38,7 @@ export class RedisUserDataSourceImpl implements RedisUserDataSource {
 
 	async setAll(getAllUserDto: GetAllUserDto, users: { data: UserEntity[]; total: number }): Promise<void> {
 		const key = this.getUserListKey(getAllUserDto);
-		await this.redis.set(key, JSON.stringify(users.data));
+		await this.redis.set(key, JSON.stringify(users));
 	}
 
 	async invalidateListCache(): Promise<void> {
