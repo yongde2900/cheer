@@ -38,13 +38,14 @@ export class CreateUserDto extends CoreDto<CreateUserDto> {
 
 	static create(obj: Record<string, unknown>): CreateUserDto {
 		const { name, email, password, sex, age, birthdate } = obj;
+		const birthDate = birthdate ? new Date(birthdate as string) : undefined;
 		return new CreateUserDto(
 			name as string,
 			email as string,
 			password as string,
 			sex as number,
 			age as number,
-			birthdate as Date
+			birthDate
 		);
 	}
 }
