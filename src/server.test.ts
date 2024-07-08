@@ -37,7 +37,7 @@ describe('Server', () => {
 			port: 2000,
 			routes: mockRouter,
 			apiPrefix: '/api',
-			pqDataSource: mockDataSource,
+			pgDataSource: mockDataSource,
 			redisDataSource: mockRedis
 		});
 	});

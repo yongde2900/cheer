@@ -33,7 +33,7 @@ describe('Main Function', () => {
 			routes: expect.any(Array),
 			port: envs.PORT,
 			apiPrefix: envs.API_PREFIX,
-			pqDataSource: AppDataSource,
+			pgDataSource: AppDataSource,
 			redisDataSource: redis
 		});
 		expect(mockStart).toHaveBeenCalled();

@@ -16,7 +16,7 @@ interface ServerOptions {
 	port: number;
 	routes: Router;
 	apiPrefix: string;
-	pqDataSource: DataSource;
+	pgDataSource: DataSource;
 	redisDataSource: Redis;
 }
 
@@ -26,22 +26,22 @@ export class Server {
 	private readonly port: number;
 	private readonly routes: Router;
 	private readonly apiPrefix: string;
-	private readonly pq: DataSource;
+	private readonly pg: DataSource;
 	private readonly redis: Redis;
 
 	constructor(options: ServerOptions) {
-		const { port, routes, apiPrefix, pqDataSource, redisDataSource } = options;
+		const { port, routes, apiPrefix, pgDataSource, redisDataSource } = options;
 		this.port = port;
 		this.routes = routes;
 		this.apiPrefix = apiPrefix;
-		this.pq = pqDataSource;
+		this.pg = pgDataSource;
 		this.redis = redisDataSource;
 	}
 
 	async start() {
 		//db init
 		try {
-			this.pq.initialize();
+			this.pg.initialize();
 		} catch (err) {
 			console.log(err);
 		}
@@ -94,7 +94,7 @@ export class Server {
 
 	async stop() {
 		if (this.server) this.server.close();
-		if (this.pq) await this.pq.destroy();
+		if (this.pg) await this.pg.destroy();
 		if (this.redis) this.redis.disconnect();
 	}
 }

@@ -11,16 +11,16 @@ import 'reflect-metadata';
 
 export default function main(): void {
 	// 資料庫連接
-	const pqDataSource = AppDataSource;
+	const pgDataSource = AppDataSource;
 
 	// redis 連接
 	const redisDataSource = redis;
 
 	const server = new Server({
-		routes: AppRoutes.routes(pqDataSource, redisDataSource),
+		routes: AppRoutes.routes(pgDataSource, redisDataSource),
 		port: envs.PORT,
 		apiPrefix: envs.API_PREFIX,
-		pqDataSource,
+		pgDataSource,
 		redisDataSource
 	});
 	server.start();
