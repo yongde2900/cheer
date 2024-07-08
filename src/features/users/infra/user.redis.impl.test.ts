@@ -1,9 +1,9 @@
 import { Redis } from 'ioredis';
-import { RedisUserDataSource } from '../domain/dataSource/redis.dataSource';
-import { RedisUserDataSourceImpl } from './redis.dataSource.impl';
+import { UserRedisDataSource } from '../domain/dataSource/user.redis';
+import { UserRedisDataSourceImpl } from './user.redis.impl';
 
-describe('RedisDataSource', () => {
-	let dataSource: RedisUserDataSource;
+describe('UserRedisDataSource', () => {
+	let dataSource: UserRedisDataSource;
 	let mockRedis: jest.Mocked<Redis>;
 
 	beforeAll(() => {
@@ -13,7 +13,7 @@ describe('RedisDataSource', () => {
 			del: jest.fn()
 		} as unknown as jest.Mocked<Redis>;
 
-		dataSource = new RedisUserDataSourceImpl(mockRedis);
+		dataSource = new UserRedisDataSourceImpl(mockRedis);
 	});
 
 	describe('getById', () => {

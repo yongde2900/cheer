@@ -1,10 +1,10 @@
 import { Repository } from 'typeorm';
 import { CreateUserDto, UserEntity, EditUserDto, GetAllUserDto } from '../domain';
-import { PqUserDataSource } from '../domain/dataSource/pq.dataSource';
+import { UserPgDataSource } from '../domain/dataSource/user.pg';
 import { User } from '../../../db/postgres/models';
 import { AppError } from '../../../core';
 
-export class PqUserDataSourceImpl implements PqUserDataSource {
+export class UserPgDataSourceImpl implements UserPgDataSource {
 	constructor(private readonly userRepository: Repository<User>) {}
 
 	async create(createDto: CreateUserDto): Promise<UserEntity> {
@@ -56,7 +56,7 @@ export class PqUserDataSourceImpl implements PqUserDataSource {
 		if (!user) {
 			throw AppError.notFound('User not found');
 		}
-	 	this.userRepository.merge(user, editDto);
+		this.userRepository.merge(user, editDto);
 		await this.userRepository.save(user);
 
 		const userEntity = UserEntity.fromModel(user);

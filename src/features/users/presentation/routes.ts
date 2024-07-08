@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import { Router } from 'express';
 import { User } from '../../../db/postgres/models';
-import { PqUserDataSourceImpl, UserRepositoryImpl, RedisUserDataSourceImpl } from '../infra';
+import { UserPgDataSourceImpl, UserRepositoryImpl, UserRedisDataSourceImpl } from '../infra';
 import { UserController } from './controller';
 import { Redis } from 'ioredis';
 import { AuthMiddleware } from '../../shared/presentation/middlewares/auth.middleware';
@@ -46,12 +46,12 @@ import { AuthMiddleware } from '../../shared/presentation/middlewares/auth.middl
  */
 
 export class UserRoutes {
-	static routes(pq: DataSource, redis: Redis): Router {
+	static routes(pg: DataSource, redis: Redis): Router {
 		const router = Router();
-		const pqUserRepository = pq.getRepository(User);
-		const redisUserRepository = new RedisUserDataSourceImpl(redis);
+		const pgUserRepository = pg.getRepository(User);
+		const redisUserRepository = new UserRedisDataSourceImpl(redis);
 
-		const dataSource = new PqUserDataSourceImpl(pqUserRepository);
+		const dataSource = new UserPgDataSourceImpl(pgUserRepository);
 		const repository = new UserRepositoryImpl(dataSource, redisUserRepository);
 		const controller = new UserController(repository);
 

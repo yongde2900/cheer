@@ -1,9 +1,9 @@
 import { Redis } from 'ioredis';
 import { GetAllUserDto, UserEntity } from '../domain';
-import { RedisUserDataSource } from '../domain/dataSource/redis.dataSource';
+import { UserRedisDataSource } from '../domain/dataSource/user.redis';
 import { flattenObject } from '../../../utils/flattenObject';
 
-export class RedisUserDataSourceImpl implements RedisUserDataSource {
+export class UserRedisDataSourceImpl implements UserRedisDataSource {
 	constructor(private readonly redis: Redis) {}
 	async getById(id: number): Promise<UserEntity | null> {
 		const user = await this.redis.get(this.getUserKey(id));

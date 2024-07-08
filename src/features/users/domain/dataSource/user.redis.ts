@@ -1,7 +1,7 @@
 import { GetAllUserDto } from '../dtos';
 import { UserEntity } from '../entities/user.entity';
 
-export interface RedisUserDataSource {
+export interface UserRedisDataSource {
 	getById(id: number): Promise<UserEntity | null>;
 	setUser(user: UserEntity): Promise<void>;
 	unSetUser(id: number): Promise<void>;

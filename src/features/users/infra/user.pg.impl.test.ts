@@ -1,12 +1,12 @@
 import { CreateUserDto, EditUserDto, GetAllUserDto, UserEntity } from '../domain';
-import { PqUserDataSource } from '../domain/dataSource/pq.dataSource';
-import { PqUserDataSourceImpl } from './pq.dataSource.impl';
+import { UserPgDataSource } from '../domain/dataSource/user.pg';
+import { UserPgDataSourceImpl } from './user.pg.impl';
 import { Repository, SelectQueryBuilder } from 'typeorm';
 import { User } from '../../../db/postgres/models';
 import { AppError } from '../../../core';
 
-describe('PqDataSourceImpl', () => {
-	let dataSource: PqUserDataSource;
+describe('UserPgDataSourceImpl', () => {
+	let dataSource: UserPgDataSource;
 	let mockUserRepository: jest.Mocked<Repository<User>>;
 	let mockSelectQueryBuilder: jest.Mocked<SelectQueryBuilder<User>>;
 	let user: UserEntity;
@@ -29,7 +29,7 @@ describe('PqDataSourceImpl', () => {
 			merge: jest.fn()
 		} as unknown as jest.Mocked<Repository<User>>;
 
-		dataSource = new PqUserDataSourceImpl(mockUserRepository);
+		dataSource = new UserPgDataSourceImpl(mockUserRepository);
 
 		user = UserEntity.fromJson({
 			id: 1,
@@ -169,10 +169,10 @@ describe('PqDataSourceImpl', () => {
 			const modifiedUserEntity = UserEntity.fromModel(modifiedUserModel);
 			mockUserRepository.findOneBy.mockResolvedValueOnce(userModel);
 			mockUserRepository.save.mockResolvedValueOnce(modifiedUserModel);
-      mockUserRepository.merge.mockImplementation((user,dto) => {
-        Object.assign(user, dto);
-        return user;
-      });
+			mockUserRepository.merge.mockImplementation((user, dto) => {
+				Object.assign(user, dto);
+				return user;
+			});
 			const result = await dataSource.edit(editDto);
 
 			expect(result).toEqual(modifiedUserEntity);
