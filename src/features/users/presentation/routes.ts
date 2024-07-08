@@ -27,22 +27,29 @@ import { AuthMiddleware } from '../../shared/presentation/middlewares/auth.middl
  *        id:
  *          type: integer
  *          description: The auto-generated id of the user
+ *          example: 1
  *        name:
  *          type: string
  *          description: The name of the user
+ *          example: John Doe
  *        email:
  *          type: string
  *          description: The email of the user
+ *          example: JohnDoe@mail.com
  *        sex:
  *          type: integer
  *          description: The sex of the user
+ *          enum: [1, 2, 3]
+ *          example: 1
  *        age:
  *          type: integer
  *          description: The age of the user
+ *          example: 20
  *        birthdate:
  *          type: string
  *          format: date
  *          description: The birthdate of the user
+ *          example: 2000-01-01
  */
 
 export class UserRoutes {
@@ -65,25 +72,23 @@ export class UserRoutes {
 		 *       - name: page
 		 *         in: query
 		 *         description: The page number
-		 *         required: false
 		 *         schema:
 		 *           type: integer
+		 *           example: 1
 		 *       - name: limit
 		 *         in: query
 		 *         description: The page size
-		 *         required: false
 		 *         schema:
 		 *           type: integer
+		 *           example: 10
 		 *       - name: name
 		 *         in: query
 		 *         description: The name of the user
-		 *         required: false
 		 *         schema:
 		 *           type: string
 		 *       - name: email
 		 *         in: query
 		 *         description: The email of the user
-		 *         required: false
 		 *         schema:
 		 *           type: string
 		 *     responses:
@@ -115,16 +120,24 @@ export class UserRoutes {
 		 *       content:
 		 *        application/json:
 		 *          schema:
+		 *            required:
+		 *              - name
+		 *              - email
+		 *              - password
 		 *            type: object
 		 *            properties:
 		 *              name:
 		 *                type: string
-		 *                required: true
 		 *                description: The name of the user
+		 *                example: John Doe
 		 *              email:
 		 *                type: string
-		 *                required: true
 		 *                description: The email of the user
+		 *                example: example@mail.com
+		 *              password:
+		 *                type: string
+		 *                description: The password of the user
+		 *                example: password
 		 *              sex:
 		 *                type: integer
 		 *                description: The sex of the user
@@ -206,15 +219,18 @@ export class UserRoutes {
 		 *         application/json:
 		 *           schema:
 		 *             type: object
+		 *             required:
+		 *               - email
+		 *               - password
 		 *             properties:
 		 *               email:
 		 *                 type: string
-		 *                 required: true
 		 *                 description: The email of the user
+		 *                 example: example@mail.com
 		 *               password:
 		 *                 type: string
-		 *                 required: true
 		 *                 description: The password of the user
+		 *                 example: password
 		 *     responses:
 		 *       200:
 		 *         description: The user was successfully deleted
@@ -258,6 +274,7 @@ export class UserRoutes {
 		 *         required: true
 		 *         schema:
 		 *           type: integer
+		 *           example: 1
 		 *     responses:
 		 *       200:
 		 *         description: A list of users
