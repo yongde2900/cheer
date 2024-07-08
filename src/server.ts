@@ -81,7 +81,11 @@ export class Server {
 		this.routes.use(ErrorMiddleware.handelError);
 
 		//swagger
-		this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+		this.app.use(
+			'/api-docs',
+			swaggerUi.serve,
+			swaggerUi.setup(specs, { swaggerOptions: { persistAuthorization: true } })
+		);
 
 		this.server = this.app.listen(this.port, () => {
 			console.log(`Server  running on Port: ${this.port}`);

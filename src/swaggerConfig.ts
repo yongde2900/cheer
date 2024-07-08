@@ -32,12 +32,7 @@ const options: Options = {
 					bearerFormat: 'JWT'
 				}
 			}
-		},
-		security: [
-			{
-				bearerAuth: []
-			}
-		]
+		}
 	}
 };
 
