@@ -58,7 +58,7 @@ export class UserEntity extends BaseEntity {
 			password: model.password,
 			sex: model.sex,
 			age: model.age,
-			birthdate: model.birthdate ? new Date(model.birthdate) : null
+			birthdate: model.birthdate ? new Date(model.birthdate) : undefined 
 		});
 	}
 
