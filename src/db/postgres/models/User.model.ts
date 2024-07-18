@@ -1,12 +1,4 @@
-import {
-	Column,
-	CreateDateColumn,
-	Entity,
-	ManyToOne,
-	OneToMany,
-	PrimaryGeneratedColumn,
-	UpdateDateColumn
-} from 'typeorm';
+import { Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { UserHabit } from './UserHabit.model';
 import { HabitContract } from './HabitContract.model';
 
@@ -56,9 +48,9 @@ export class User {
 	@OneToMany(() => UserHabit, (userHabits) => userHabits.user)
 	userHabits!: UserHabit[];
 
-	@ManyToOne(() => HabitContract, (habitContract) => habitContract.principal)
+	@OneToMany(() => HabitContract, (habitContract) => habitContract.principal)
 	principalHabitContract!: HabitContract;
 
-	@ManyToOne(() => HabitContract, (habitContract) => habitContract.principal)
+	@OneToMany(() => HabitContract, (habitContract) => habitContract.trustee)
 	trusteeHabitContract!: HabitContract;
 }

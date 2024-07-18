@@ -19,16 +19,21 @@ export class UserHabit {
 	@PrimaryGeneratedColumn()
 	id!: number;
 
+	@Column('varchar', { length: 45 })
+	name!: string;
+
 	@Column('int', {
 		unsigned: true,
-		comment: 'unit: days'
+		default: 0
 	})
 	frenquency!: number;
 
 	@Column('date')
 	started_at!: Date;
 
-	@Column('boolean')
+	@Column('boolean', {
+		default: true
+	})
 	is_active!: boolean;
 
 	@Column('date')

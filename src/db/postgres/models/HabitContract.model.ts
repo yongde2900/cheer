@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { UserHabit } from './UserHabit.model';
 import { User } from './User.model';
 
@@ -18,11 +18,11 @@ export class HabitContract {
 	@OneToOne(() => UserHabit, (userHabit) => userHabit.habitContract)
 	userHabit!: UserHabit;
 
-	@OneToMany(() => User, (principal) => principal.principalHabitContract)
+	@ManyToOne(() => User, (principal) => principal.principalHabitContract)
 	@JoinColumn({ name: 'principal' })
 	principal!: User;
 
-	@OneToMany(() => User, (trustee) => trustee.trusteeHabitContract)
+	@ManyToOne(() => User, (trustee) => trustee.trusteeHabitContract)
 	@JoinColumn({ name: 'trustee' })
 	trustee!: User;
 }
