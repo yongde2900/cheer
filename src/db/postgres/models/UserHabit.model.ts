@@ -26,7 +26,7 @@ export class UserHabit {
 		unsigned: true,
 		default: 0
 	})
-	frenquency!: number;
+	frequency!: number;
 
 	@Column('date')
 	started_at!: Date;
@@ -48,7 +48,7 @@ export class UserHabit {
 	// Relation
 	@ManyToOne(() => Habit, (habit) => habit.userHabits)
 	@JoinColumn({ name: 'habit_id' })
-	habit!: Habit;
+	habit?: Habit;
 
 	@ManyToOne(() => User, (user) => user.userHabits)
 	@JoinColumn({ name: 'user_id' })
@@ -58,5 +58,5 @@ export class UserHabit {
 	userHabitRecords!: UserHabitRecord[];
 
 	@OneToOne(() => HabitContract, (habitContract) => habitContract.userHabit)
-	habitContract!: HabitContract;
+	habitContract?: HabitContract;
 }

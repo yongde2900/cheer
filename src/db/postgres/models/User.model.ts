@@ -32,12 +32,12 @@ export class User {
 		unsigned: true,
 		nullable: true
 	})
-	age!: number;
+	age?: number;
 
 	@Column('date', {
 		nullable: true
 	})
-	birthdate!: Date;
+	birthdate?: Date;
 
 	@CreateDateColumn()
 	created_at!: Date;
@@ -49,8 +49,8 @@ export class User {
 	userHabits!: UserHabit[];
 
 	@OneToMany(() => HabitContract, (habitContract) => habitContract.principal)
-	principalHabitContract!: HabitContract;
+	principalHabitContract?: HabitContract;
 
 	@OneToMany(() => HabitContract, (habitContract) => habitContract.trustee)
-	trusteeHabitContract!: HabitContract;
+	trusteeHabitContract?: HabitContract;
 }

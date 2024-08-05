@@ -8,7 +8,7 @@ export class PaginationDto extends CoreDto<PaginationDto> {
 	@Min(1)
 	public readonly limit: number;
 
-	private constructor(page: number, limit: number) {
+	public constructor(page: number = 1, limit: number = 10) {
 		super();
 		this.page = page;
 		this.limit = limit;
